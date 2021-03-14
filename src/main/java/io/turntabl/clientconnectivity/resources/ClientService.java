@@ -14,7 +14,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@EnableJpaAuditing
 public class ClientService {
     private final ClientRepository clientRepository;
 
@@ -49,6 +48,7 @@ public class ClientService {
         Optional<Client> clientByEmail = this.clientRepository.findClientByEmail(client.getEmail());
         String encodedPassword = encoder.encode(password);
         client.setPassword(encodedPassword);
+        client.setBalance(200.00);
 
         if(clientByEmail.isPresent()){
             response.setCode(HttpStatus.BAD_REQUEST.value());

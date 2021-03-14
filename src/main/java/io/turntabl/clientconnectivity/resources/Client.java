@@ -34,6 +34,8 @@ public class Client {
     )
     private String name;
 
+    private Double balance;
+
 //    public Client(Long id, String email, String password, String name) {
 //        this.id = id;
 //        this.email = email;
@@ -42,6 +44,7 @@ public class Client {
 //    }
 
     public Client() {
+
     }
 
     public Long getId() {
@@ -74,6 +77,14 @@ public class Client {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 
     @Override
