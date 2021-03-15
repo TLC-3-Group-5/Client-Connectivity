@@ -1,6 +1,7 @@
 package io.turntabl.clientconnectivity.resources;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table
 @Entity(name="Client")
@@ -36,6 +37,9 @@ public class Client {
 
     private Double balance;
 
+    @OneToMany(mappedBy = "client")
+    private List<Portfolio> portfolios;
+
 //    public Client(Long id, String email, String password, String name) {
 //        this.id = id;
 //        this.email = email;
@@ -45,6 +49,14 @@ public class Client {
 
     public Client() {
 
+    }
+
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
+    }
+
+    public void setPortfolios(List<Portfolio> portfolios) {
+        this.portfolios = portfolios;
     }
 
     public Long getId() {
