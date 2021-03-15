@@ -10,7 +10,6 @@ public class ClientConnectivityApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(ClientConnectivityApplication.class, args);
-
 	}
 
 }
