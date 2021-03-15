@@ -1,4 +1,4 @@
-package io.turntabl.clientconnectivity.resources;
+package io.turntabl.clientconnectivity.resources.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

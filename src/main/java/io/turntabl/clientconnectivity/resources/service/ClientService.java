@@ -1,8 +1,10 @@
-package io.turntabl.clientconnectivity.resources;
+package io.turntabl.clientconnectivity.resources.service;
 
+import io.turntabl.clientconnectivity.resources.model.Client;
+import io.turntabl.clientconnectivity.resources.model.Response;
+import io.turntabl.clientconnectivity.resources.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -81,14 +83,15 @@ public class ClientService {
             String password = foundClient.getPassword();
             if(encoder.matches(client.getPassword(), password)){
                 response.setCode(HttpStatus.OK.value());
+//                response.setData(foundClient);
                 response.setStatus("Success");
             }else{
                 response.setCode(HttpStatus.BAD_REQUEST.value());
                 response.setStatus("Login Failed");
             }
         }else{
-            response.setCode(HttpStatus.UNAUTHORIZED.value());
-            response.setStatus("Unauthorized Failed");
+            response.setCode(HttpStatus.NOT_FOUND.value());
+            response.setStatus("Client Not Found");
         }
         return response;
     }

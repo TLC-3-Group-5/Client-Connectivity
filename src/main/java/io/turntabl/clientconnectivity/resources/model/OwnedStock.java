@@ -1,4 +1,6 @@
-package io.turntabl.clientconnectivity.resources;
+package io.turntabl.clientconnectivity.resources.model;
+
+import io.turntabl.clientconnectivity.resources.model.Portfolio;
 
 import javax.persistence.*;
 

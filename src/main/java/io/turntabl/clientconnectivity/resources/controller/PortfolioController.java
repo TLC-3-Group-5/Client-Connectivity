@@ -1,5 +1,8 @@
-package io.turntabl.clientconnectivity.resources;
+package io.turntabl.clientconnectivity.resources.controller;
 
+import io.turntabl.clientconnectivity.resources.service.PortfolioService;
+import io.turntabl.clientconnectivity.resources.model.Portfolio;
+import io.turntabl.clientconnectivity.resources.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
