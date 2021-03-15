@@ -1,7 +1,6 @@
 package io.turntabl.clientconnectivity.resources;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table

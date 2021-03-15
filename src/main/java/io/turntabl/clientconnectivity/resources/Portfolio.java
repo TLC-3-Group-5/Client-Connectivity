@@ -37,7 +37,6 @@ public class Portfolio {
     @OneToMany(mappedBy = "portfolio")
     private List<Orders> orders;
 
-
     public List<OwnedStock> getOwnedStocks() {
         return ownedStocks;
     }
