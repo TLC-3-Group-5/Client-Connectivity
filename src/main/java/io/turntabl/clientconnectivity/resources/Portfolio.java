@@ -33,7 +33,7 @@ public class Portfolio {
     private List<OwnedStock> ownedStocks;
 
     @OneToMany(mappedBy = "portfolio")
-    private List<Order> orders;
+    private List<Orders> orders;
 
     public List<OwnedStock> getOwnedStocks() {
         return ownedStocks;
@@ -43,11 +43,11 @@ public class Portfolio {
         this.ownedStocks = ownedStocks;
     }
 
-    public List<Order> getOrders() {
+    public List<Orders> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<Orders> orders) {
         this.orders = orders;
     }
 
