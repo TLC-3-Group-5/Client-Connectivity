@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table
-@Entity(name="Order")
-public class Order {
+@Entity(name="Orders")
+public class Orders {
     @Id
     @SequenceGenerator(
             name= "client_sequence",
@@ -42,7 +42,7 @@ public class Order {
 
     private LocalDateTime updatedAt;
 
-    public Order() {
+    public Orders() {
     }
 
     public Long getId() {

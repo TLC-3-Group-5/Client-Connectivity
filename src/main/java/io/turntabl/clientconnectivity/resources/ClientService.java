@@ -34,6 +34,7 @@ public class ClientService {
         List<Client> clients = clientRepository.findAll();
         for(Client client : clients){
             client.setPassword("");
+            client.setPortfolios(null);
         }
         return clients;
     }

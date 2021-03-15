@@ -15,17 +15,18 @@ public class PortfolioService {
         this.clientRepository= clientRepository;
     }
 
-    public Response addPortfolio(Portfolio portfolio, String email){
+    public Response addPortfolio(Portfolio portfolio){
         Response response = new Response();
 
-        if(!email.isEmpty()){
-            Client client = clientRepository.findClientByEmail(email).orElse(null);
+        if(!portfolio.getEmail().isEmpty()){
+            Client client = clientRepository.findClientByEmail(portfolio.getEmail()).orElse(null);
             portfolio.setClient(client);
             portfolio.setName(portfolio.getName());
             response.setStatus("Portfolio created successfully");
             response.setCode(HttpStatus.OK.value());
+            this.portfolioRepository.save(portfolio);
         }else{
-            response.setStatus("Email is required");
+            response.setStatus("User is not found");
             response.setCode(HttpStatus.BAD_REQUEST.value());
         }
         return response;

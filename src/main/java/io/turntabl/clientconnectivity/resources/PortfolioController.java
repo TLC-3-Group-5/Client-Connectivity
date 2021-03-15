@@ -17,7 +17,7 @@ public class PortfolioController {
     }
 
     @PostMapping(path="/create")
-    public Response createPortfolio(@RequestBody Portfolio portfolio, String email){
-        return this.portfolioService.addPortfolio(portfolio, email);
+    public Response createPortfolio(@RequestBody Portfolio portfolio){
+        return this.portfolioService.addPortfolio(portfolio);
     }
 }
