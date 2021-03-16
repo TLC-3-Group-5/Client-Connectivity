@@ -67,6 +67,7 @@ public class ClientService {
         return this.clientRepository.findById(clientId).orElse(null);
     }
 
+    // Login
     public Response loginClient(Client client){
         Response response = new Response();
         System.out.println(client.getPassword());
