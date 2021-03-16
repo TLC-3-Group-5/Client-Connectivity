@@ -47,12 +47,12 @@ public class PortfolioService {
     // Get Client's Balance
     public Double getClientBalance(Long portfolioId){
         Portfolio portfolio = this.portfolioRepository.findById(portfolioId).orElse(null);
-        return portfolio.getClient().getBalance();
+        return portfolio != null ? portfolio.getClient().getBalance() : null;
     }
 
     // Get Client's Stocks on a particular portfolio
     public List<OwnedStock> getStocksOnPortfolio(Long portfolioId){
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElse(null);
-        return portfolio.getOwnedStocks();
+        return portfolio != null ? portfolio.getOwnedStocks() : null;
     }
 }
