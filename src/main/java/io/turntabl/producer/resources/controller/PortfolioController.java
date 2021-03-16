@@ -27,7 +27,7 @@ public class PortfolioController {
     @GetMapping
     public List<Portfolio> getAllPortfolio(){ return portfolioService.getAllPortfolio();}
 
-    @GetMapping(path = "{portfolioId}")
+    @GetMapping(path = "/client-balance/{portfolioId}")
     public Double getClientBalance(@PathVariable("portfolioId") Long portfolioId){
         return portfolioService.getClientBalance(portfolioId);
     }
