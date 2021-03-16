@@ -55,4 +55,10 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElse(null);
         return portfolio != null ? portfolio.getOwnedStocks() : null;
     }
+
+    // Get Portfolio
+    public Portfolio getPortfolio(Long portfolioId){
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElse(null);
+        return portfolio;
+    }
 }
