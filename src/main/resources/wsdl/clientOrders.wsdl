@@ -1,0 +1,54 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://www.turntabl.io/producer/clientOrders" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.turntabl.io/producer/clientOrders" targetNamespace="http://www.turntabl.io/producer/clientOrders">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.turntabl.io/producer/clientOrders">
+            <xsd:element name="OrderRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="portfolioId" type="xsd:int"/>
+                        <xsd:element name="product" type="xsd:string"/>
+                        <xsd:element name="quantity" type="xsd:int"/>
+                        <xsd:element name="price" type="xsd:double"/>
+                        <xsd:element name="side" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="OrderResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="isOrderValid" type="xsd:boolean"/>
+                        <xsd:element name="message" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="OrderRequest">
+        <wsdl:part element="tns:OrderRequest" name="OrderRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="OrderResponse">
+        <wsdl:part element="tns:OrderResponse" name="OrderResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="ClientOrders">
+        <wsdl:operation name="Order">
+            <wsdl:input message="tns:OrderRequest" name="OrderRequest"> </wsdl:input>
+            <wsdl:output message="tns:OrderResponse" name="OrderResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ClientOrdersSoap11" type="tns:ClientOrders">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="Order">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="OrderRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="OrderResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ClientOrdersService">
+        <wsdl:port binding="tns:ClientOrdersSoap11" name="ClientOrdersSoap11">
+            <soap:address location="http://localhost:8082/ws"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

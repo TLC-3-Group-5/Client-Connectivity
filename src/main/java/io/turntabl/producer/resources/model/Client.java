@@ -1,4 +1,8 @@
-package io.turntabl.clientconnectivity.resources.model;
+package io.turntabl.producer.resources.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -29,6 +33,7 @@ public class Client {
     @Column(
             nullable=false
     )
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Column(
             nullable=false
@@ -38,6 +43,7 @@ public class Client {
     private Double balance;
 
     @OneToMany(mappedBy = "client")
+    @JsonManagedReference
     private List<Portfolio> portfolios;
 
 //    public Client(Long id, String email, String password, String name) {

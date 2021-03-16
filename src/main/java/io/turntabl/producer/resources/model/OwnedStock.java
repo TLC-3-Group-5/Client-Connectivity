@@ -1,6 +1,7 @@
-package io.turntabl.clientconnectivity.resources.model;
+package io.turntabl.producer.resources.model;
 
-import io.turntabl.clientconnectivity.resources.model.Portfolio;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -32,6 +33,7 @@ public class OwnedStock {
 
     @ManyToOne
     @JoinColumn(name="portfolio_id")
+    @JsonBackReference
     private Portfolio portfolio;
 
     public OwnedStock() {

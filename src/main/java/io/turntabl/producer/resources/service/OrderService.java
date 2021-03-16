@@ -1,6 +1,6 @@
-package io.turntabl.clientconnectivity.resources.service;
+package io.turntabl.producer.resources.service;
 
-import io.turntabl.clientconnectivity.resources.repository.OrderRepository;
+import io.turntabl.producer.resources.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

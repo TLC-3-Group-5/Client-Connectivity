@@ -1,8 +1,8 @@
-package io.turntabl.clientconnectivity.resources.controller;
+package io.turntabl.producer.resources.controller;
 
-import io.turntabl.clientconnectivity.resources.service.ClientService;
-import io.turntabl.clientconnectivity.resources.model.Client;
-import io.turntabl.clientconnectivity.resources.model.Response;
+import io.turntabl.producer.resources.service.ClientService;
+import io.turntabl.producer.resources.model.Client;
+import io.turntabl.producer.resources.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

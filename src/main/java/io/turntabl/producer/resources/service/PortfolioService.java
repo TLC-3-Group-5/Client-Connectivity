@@ -1,13 +1,16 @@
-package io.turntabl.clientconnectivity.resources.service;
+package io.turntabl.producer.resources.service;
 
-import io.turntabl.clientconnectivity.resources.model.Client;
-import io.turntabl.clientconnectivity.resources.model.Portfolio;
-import io.turntabl.clientconnectivity.resources.model.Response;
-import io.turntabl.clientconnectivity.resources.repository.ClientRepository;
-import io.turntabl.clientconnectivity.resources.repository.PortfolioRepository;
+import io.turntabl.producer.resources.model.Client;
+import io.turntabl.producer.resources.model.OwnedStock;
+import io.turntabl.producer.resources.model.Portfolio;
+import io.turntabl.producer.resources.model.Response;
+import io.turntabl.producer.resources.repository.ClientRepository;
+import io.turntabl.producer.resources.repository.PortfolioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PortfolioService {
@@ -20,6 +23,7 @@ public class PortfolioService {
         this.clientRepository= clientRepository;
     }
 
+    // Create a portfolio
     public Response addPortfolio(Portfolio portfolio){
         Response response = new Response();
 
@@ -35,5 +39,20 @@ public class PortfolioService {
             response.setCode(HttpStatus.BAD_REQUEST.value());
         }
         return response;
+    }
+
+    // Get All Portfolios
+    public List<Portfolio> getAllPortfolio(){return portfolioRepository.findAll();}
+
+    // Get Client's Balance
+    public Double getClientBalance(Long portfolioId){
+        Portfolio portfolio = this.portfolioRepository.findById(portfolioId).orElse(null);
+        return portfolio.getClient().getBalance();
+    }
+
+    // Get Client's Stocks on a particular portfolio
+    public List<OwnedStock> getStocksOnPortfolio(Long portfolioId){
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElse(null);
+        return portfolio.getOwnedStocks();
     }
 }

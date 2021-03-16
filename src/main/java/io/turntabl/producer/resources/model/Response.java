@@ -1,4 +1,4 @@
-package io.turntabl.clientconnectivity.resources.model;
+package io.turntabl.producer.resources.model;
 
 public class Response {
     private String name;

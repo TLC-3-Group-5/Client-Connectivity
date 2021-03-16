@@ -1,8 +1,8 @@
-package io.turntabl.clientconnectivity.resources.service;
+package io.turntabl.producer.resources.service;
 
-import io.turntabl.clientconnectivity.resources.model.Client;
-import io.turntabl.clientconnectivity.resources.model.Response;
-import io.turntabl.clientconnectivity.resources.repository.ClientRepository;
+import io.turntabl.producer.resources.model.Client;
+import io.turntabl.producer.resources.model.Response;
+import io.turntabl.producer.resources.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -32,14 +32,7 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public List<Client> getClients(){
-        List<Client> clients = clientRepository.findAll();
-        for(Client client : clients){
-            client.setPassword("");
-            client.setPortfolios(null);
-        }
-        return clients;
-    }
+    public List<Client> getClients(){ return clientRepository.findAll();}
 
     // SignUp
     public Response addNewClient(Client client) {
@@ -76,6 +69,7 @@ public class ClientService {
 
     public Response loginClient(Client client){
         Response response = new Response();
+        System.out.println(client.getPassword());
         Client foundClient = this.clientRepository.findClientByEmail(client.getEmail()).orElse(null);
         if(foundClient!=null){
 
@@ -83,7 +77,7 @@ public class ClientService {
             String password = foundClient.getPassword();
             if(encoder.matches(client.getPassword(), password)){
                 response.setCode(HttpStatus.OK.value());
-//                response.setData(foundClient);
+                response.setData(foundClient);
                 response.setStatus("Success");
             }else{
                 response.setCode(HttpStatus.BAD_REQUEST.value());

@@ -1,6 +1,6 @@
-package io.turntabl.clientconnectivity.resources.repository;
+package io.turntabl.producer.resources.repository;
 
-import io.turntabl.clientconnectivity.resources.model.Client;
+import io.turntabl.producer.resources.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

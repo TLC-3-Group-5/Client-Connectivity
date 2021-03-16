@@ -1,4 +1,8 @@
-package io.turntabl.clientconnectivity.resources.model;
+package io.turntabl.producer.resources.model;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -29,12 +33,16 @@ public class Portfolio {
 
     @ManyToOne
     @JoinColumn(name="client_id")
+    @JsonBackReference
     private Client client;
 
     @OneToMany(mappedBy = "portfolio")
+    @JsonManagedReference
     private List<OwnedStock> ownedStocks;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "portfolio")
+
     private List<Orders> orders;
 
     public List<OwnedStock> getOwnedStocks() {

@@ -1,6 +1,6 @@
-package io.turntabl.clientconnectivity.resources.repository;
+package io.turntabl.producer.resources.repository;
 
-import io.turntabl.clientconnectivity.resources.model.OwnedStock;
+import io.turntabl.producer.resources.model.OwnedStock;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OwnedStockRepository extends JpaRepository<OwnedStock,Long> {

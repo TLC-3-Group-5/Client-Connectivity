@@ -1,4 +1,4 @@
-package io.turntabl.clientconnectivity.resources.controller;
+package io.turntabl.producer.resources.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
