@@ -23,7 +23,9 @@ public class OrderController {
     @Autowired
     private SoapClient client;
 
+    @Autowired
     private final OrderService orderService;
+    @Autowired
     private  final PortfolioService portfolioService;
 
     @Autowired
