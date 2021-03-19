@@ -26,8 +26,8 @@ jobs:
           name: application-jar
           path: target/*.jar
 
-  dockerize-and-push:
-    name: Dockerize and push
+  dockerize-push-release:
+    name: Dockerize, push and release
     needs: [build]
     runs-on: ubuntu-latest
     steps:
