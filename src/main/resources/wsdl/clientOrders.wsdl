@@ -48,7 +48,8 @@
     </wsdl:binding>
     <wsdl:service name="ClientOrdersService">
         <wsdl:port binding="tns:ClientOrdersSoap11" name="ClientOrdersSoap11">
-            <soap:address location="http://localhost:8082/ws"/>
+            <!-- <soap:address location="http://localhost:8082/ws"/> -->
+            <soap:address location="${app.OVS_SOAP_API}/ws"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
