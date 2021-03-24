@@ -40,4 +40,16 @@ public class PortfolioController {
         return ownedStockList;
     }
 
+    @PutMapping(path="/update-balance/{portfolioId}")
+    public void updateClientBalance
+            (@PathVariable("portfolioId") Long portfolioId, @RequestBody Double valueOfOrder){
+        portfolioService.updateClientBalance(portfolioId, valueOfOrder);
+    }
+
+    @PutMapping(path="/update-stock/{portfolioId}/{product}")
+    public void updateClientStock(@PathVariable("portfolioId") Long portfolioId,
+                                  @PathVariable("product") String product,
+                                  @RequestBody Integer quantity){
+        portfolioService.updateClientStock(portfolioId, product, quantity);
+    }
 }
