@@ -1,9 +1,6 @@
 package io.turntabl.producer.resources.service;
 
-import io.turntabl.producer.resources.model.Client;
-import io.turntabl.producer.resources.model.OwnedStock;
-import io.turntabl.producer.resources.model.Portfolio;
-import io.turntabl.producer.resources.model.Response;
+import io.turntabl.producer.resources.model.*;
 import io.turntabl.producer.resources.repository.ClientRepository;
 import io.turntabl.producer.resources.repository.OwnedStockRepository;
 import io.turntabl.producer.resources.repository.PortfolioRepository;
@@ -89,6 +86,61 @@ public class PortfolioService {
             Integer oldQuantity = stock.getQuantity();
             stock.setQuantity(oldQuantity-quantity);
             ownedStockRepository.save(stock);
+        }
+    }
+
+    // Add Purchased Stocks to Portfolio
+    public void updatePortfolioOfOrder(Long id, List<Trade> trade){
+        List<OwnedStock> ownedStocks = getStocksOnPortfolio(id);
+        Trade oneTrade = trade.stream().findFirst().orElse(null);
+        if(oneTrade!=null){
+            OwnedStock stock = ownedStocks.stream()
+                    .filter(ownedStock -> ownedStock.getTicker().equals(oneTrade.getProduct()))
+                    .findFirst().orElse(null);
+
+            Double totalValueOfTrade = trade.stream()
+                    .mapToDouble(trade1->trade1.getQuantity()*trade1.getPrice()).sum();
+
+            Double totalValueOfOrder = oneTrade.getOrders().getPrice() * oneTrade.getOrders().getQuantity();
+
+            int totalQuantity = trade.stream().mapToInt(Trade::getQuantity).sum();
+            Double averagePrice = trade.stream().mapToDouble(Trade::getPrice).average().orElse(0);
+
+            if(stock==null){
+                OwnedStock stock1 = new OwnedStock();
+                stock1.setQuantity(totalQuantity);
+                stock1.setTicker(oneTrade.getProduct());
+                stock1.setPrice(averagePrice);
+                stock1.setPortfolio(getPortfolio(id));
+                ownedStockRepository.save(stock1);
+            }else{
+                int oldQuantity = stock.getQuantity();
+                stock.setQuantity(oldQuantity + totalQuantity);
+                ownedStockRepository.save(stock);
+            }
+
+            if(totalValueOfOrder-totalValueOfTrade>0){
+                Portfolio portfolio = this.portfolioRepository.findById(id).orElse(null);
+                if(portfolio!=null){
+                    Client client = portfolio.getClient();
+                    Double oldBalance = client.getBalance();
+                    client.setBalance(oldBalance + (totalValueOfOrder-totalValueOfTrade));
+                    clientRepository.save(client);
+                }
+            }
+
+        }
+    }
+
+    // Update Balance After Stock Sales
+    public void updateBalanceAfterSale(Long id, Double valueOfTrades){
+        Portfolio portfolio = this.portfolioRepository.findById(id).orElse(null);
+
+        if(portfolio!=null){
+            Client client = portfolio.getClient();
+            Double oldBalance = client.getBalance();
+            client.setBalance(oldBalance + valueOfTrades);
+            clientRepository.save(client);
         }
     }
 }
