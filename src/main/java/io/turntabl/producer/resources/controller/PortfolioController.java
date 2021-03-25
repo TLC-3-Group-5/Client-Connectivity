@@ -1,10 +1,7 @@
 package io.turntabl.producer.resources.controller;
 
-import io.turntabl.producer.resources.model.Client;
-import io.turntabl.producer.resources.model.OwnedStockList;
+import io.turntabl.producer.resources.model.*;
 import io.turntabl.producer.resources.service.PortfolioService;
-import io.turntabl.producer.resources.model.Portfolio;
-import io.turntabl.producer.resources.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,5 +48,17 @@ public class PortfolioController {
                                   @PathVariable("product") String product,
                                   @RequestBody Integer quantity){
         portfolioService.updateClientStock(portfolioId, product, quantity);
+    }
+
+    @PutMapping(path="/add-stock-to-portfolio/{portfolioId}")
+    public void addStockToPortfolio(@PathVariable("portfolioId") Long portfolioId,
+                                    @RequestBody List<Trade> trade){
+        portfolioService.updatePortfolioOfOrder(portfolioId, trade);
+    }
+
+    @PutMapping(path="/update-client-balance-after-sale/{portfolioId}")
+    public void updateBalanceAfterSale(@PathVariable("portfolioId") Long portfolioId,
+                                       @RequestBody Double valueOfTrades){
+        portfolioService.updateBalanceAfterSale(portfolioId, valueOfTrades);
     }
 }
