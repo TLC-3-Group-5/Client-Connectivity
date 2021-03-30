@@ -116,5 +116,10 @@ public class ClientService {
         }
     }
 
-}
+    public Client getClientByEmail(String clientEmail) {
+      return this.clientRepository.findAll().stream()
+        .filter((Client client) -> client.getEmail().equals(clientEmail))
+        .findFirst().orElse(null);
+    }
 
+}

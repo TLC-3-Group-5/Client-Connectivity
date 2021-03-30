@@ -50,6 +50,11 @@ public class ClientController {
         return this.clientService.getClient(clientId);
     }
 
+    @GetMapping(path = "/by-email/{clientEmail}")
+    public Client getClientByEmail(@PathVariable("clientEmail") String clientEmail){
+        return this.clientService.getClientByEmail(clientEmail);
+    }
+
     @PostMapping("/getOrderStatus")
     public Response createValidatedOrders(@RequestBody OrderRequest request) {
         Response response = new Response();
