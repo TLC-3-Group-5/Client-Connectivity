@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PortfolioService {
@@ -29,6 +30,8 @@ public class PortfolioService {
     public Response addPortfolio(Portfolio portfolio){
         Response response = new Response();
 
+        System.out.println(portfolio);
+
         if(!portfolio.getEmail().isEmpty()){
             Client client = clientRepository.findClientByEmail(portfolio.getEmail()).orElse(null);
             portfolio.setClient(client);
@@ -36,6 +39,8 @@ public class PortfolioService {
             response.setStatus("Portfolio created successfully");
             response.setCode(HttpStatus.OK.value());
             this.portfolioRepository.save(portfolio);
+
+            System.out.println("Porfolio saved");
         }else{
             response.setStatus("User is not found");
             response.setCode(HttpStatus.BAD_REQUEST.value());
@@ -45,6 +50,16 @@ public class PortfolioService {
 
     // Get All Portfolios
     public List<Portfolio> getAllPortfolio(){return portfolioRepository.findAll();}
+
+    // Get portfolios per client
+    public List<Portfolio> getAllPortfoliosPerClient(Long clientId) {
+        return portfolioRepository.findAll()
+            .stream()
+            .filter((Portfolio p) -> {
+                return p.getClient().getId().equals(clientId);
+            })
+            .collect(Collectors.toList());
+    }
 
     // Get Client's Balance
     public Double getClientBalance(Long portfolioId){
