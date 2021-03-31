@@ -1,20 +1,44 @@
 package io.turntabl.producer.resources.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.turntabl.producer.resources.model.*;
+import io.turntabl.producer.resources.model.TradeList;
+import io.turntabl.producer.resources.model.ExchangeMarketData;
 import io.turntabl.producer.resources.repository.ClientRepository;
 import io.turntabl.producer.resources.repository.OwnedStockRepository;
 import io.turntabl.producer.resources.repository.PortfolioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PortfolioService {
     private final PortfolioRepository portfolioRepository;
     private final ClientRepository clientRepository;
     private final OwnedStockRepository ownedStockRepository;
+
+    private static final ObjectMapper objectMapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+
+    @Value("${app.MARKET_DATA_EXCHANGE_1}")
+    private String exchangeOneMarketData;
+
+    @Value("${app.MARKET_DATA_EXCHANGE_2}")
+    private String exchangeTwoMarketData;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @Autowired
     public PortfolioService(PortfolioRepository portfolioRepository,
@@ -90,21 +114,21 @@ public class PortfolioService {
     }
 
     // Add Purchased Stocks to Portfolio
-    public void updatePortfolioOfOrder(Long id, List<Trade> trade){
+    public void updatePortfolioOfOrder(Long id, TradeList trade){
         List<OwnedStock> ownedStocks = getStocksOnPortfolio(id);
-        Trade oneTrade = trade.stream().findFirst().orElse(null);
+        Trade oneTrade = trade.getTradeList().stream().findFirst().orElse(null);
         if(oneTrade!=null){
             OwnedStock stock = ownedStocks.stream()
                     .filter(ownedStock -> ownedStock.getTicker().equals(oneTrade.getProduct()))
                     .findFirst().orElse(null);
 
-            Double totalValueOfTrade = trade.stream()
+            Double totalValueOfTrade = trade.getTradeList().stream()
                     .mapToDouble(trade1->trade1.getQuantity()*trade1.getPrice()).sum();
 
             Double totalValueOfOrder = oneTrade.getOrders().getPrice() * oneTrade.getOrders().getQuantity();
 
-            int totalQuantity = trade.stream().mapToInt(Trade::getQuantity).sum();
-            Double averagePrice = trade.stream().mapToDouble(Trade::getPrice).average().orElse(0);
+            int totalQuantity = trade.getTradeList().stream().mapToInt(Trade::getQuantity).sum();
+            Double averagePrice = trade.getTradeList().stream().mapToDouble(Trade::getPrice).average().orElse(0);
 
             if(stock==null){
                 OwnedStock stock1 = new OwnedStock();
@@ -142,5 +166,31 @@ public class PortfolioService {
             client.setBalance(oldBalance + valueOfTrades);
             clientRepository.save(client);
         }
+    }
+
+    public Map<String, Double> getProfitLoss(Long id){
+        List<OwnedStock> ownedStocks = getStocksOnPortfolio(id);
+        Map<String, Double> profits = new HashMap<>();
+        if(ownedStocks!=null){
+            profits =  ownedStocks.stream().collect(Collectors.toMap(OwnedStock::getTicker,ownedStock -> {
+                try {
+                    ExchangeMarketData exchangeMarketData = objectMapper
+                            .readValue(restTemplate.getForObject(exchangeOneMarketData.concat(ownedStock.getTicker()), String.class),
+                                    ExchangeMarketData.class);
+                    ExchangeMarketData exchangeMarketData_2 = objectMapper
+                            .readValue(restTemplate.getForObject(exchangeTwoMarketData.concat(ownedStock.getTicker()), String.class),
+                                    ExchangeMarketData.class);
+                    Double tradedPrice = (exchangeMarketData.getLAST_TRADED_PRICE() + exchangeMarketData_2.getLAST_TRADED_PRICE())/2;
+                    return (((tradedPrice - ownedStock.getPrice())/ownedStock.getPrice())*100);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+
+                return Double.parseDouble(null);
+            } ));
+        }else{
+            return profits;
+        }
+        return profits;
     }
 }
